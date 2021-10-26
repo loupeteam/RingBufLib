@@ -7,7 +7,7 @@
     <File>VersionHistory.txt</File>
     <File Description="Exported data types">RingBufLib.typ</File>
     <File Description="Exported functions and function blocks">RingBufLib.fun</File>
-    <File>RingBuf.st</File>
+    <File>RingBuf.c</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />
