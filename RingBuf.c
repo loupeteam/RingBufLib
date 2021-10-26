@@ -9,11 +9,14 @@
  * Implementation of program Alarm
  ********************************************************************/
 
-#include "RingBuf.h"
+#include "RingBufLib.h"
 
 #define ADR(x) x
 #define brsmemcpy memcpy
 #define ERR_OK 0
+#define min(a,b) (((a)<(b))?(a):(b))
+#define max(a,b) (((a)>(b))?(a):(b))
+#define limit(a,b,c) (max(a,min(b, c)))
 
 unsigned short BufferInit(unsigned long Buffer, unsigned short MaxValues, unsigned long DataSize) {
 	unsigned short returnValue=0;	
@@ -112,7 +115,7 @@ unsigned short BufferRemoveBottom(unsigned long Buffer) {
 		Buffer_typ* ibuf = (Buffer_typ*)Buffer;
 		if( ibuf->NumberValues > 0 ) {
 			brsmemset( BufferGetItemAdr(Buffer,ibuf->NumberValues-1,0),0,ibuf->DataSize);
-			ibuf->NumberValues=LIMIT(0,ibuf->NumberValues-1,ibuf->MaxValues);				
+			ibuf->NumberValues=limit(0,ibuf->NumberValues-1,ibuf->MaxValues);				
 		}	
 	} else {
 		returnValue= BufferStatus(Buffer);
@@ -129,7 +132,7 @@ unsigned short BufferRemoveTop(unsigned long Buffer) {
 			if( ibuf->TopIndex >= UINT_TO_INT(ibuf->MaxValues) ) {
 				ibuf->TopIndex=0;
 			}
-			ibuf->NumberValues=LIMIT(0,ibuf->NumberValues-1,ibuf->MaxValues);				
+			ibuf->NumberValues=limit(0,ibuf->NumberValues-1,ibuf->MaxValues);				
 		}	
 	} else {
 		returnValue= BufferStatus(Buffer);
@@ -155,7 +158,7 @@ unsigned short BufferRemoveOffset(unsigned long Buffer, unsigned short Offset, u
 				if( Index >= UINT_TO_DINT(ibuf->MaxValues) ) {
 					Index= Index - ibuf->MaxValues;
 				}				
-				//iNumEntries=LIMIT(0,NumEntries,ibuf->NumberValues-Offset);
+				//iNumEntries=limit(0,NumEntries,ibuf->NumberValues-Offset);
 				//[00X0T00000]Offset == 8
 				//[XT00000000]X TI == 4 index= 12
 				//						index=2
@@ -169,7 +172,7 @@ unsigned short BufferRemoveOffset(unsigned long Buffer, unsigned short Offset, u
 					//shift data up to topindex
 					brsmemcpy(BufferGetItemAdr(Buffer,Offset,0),BufferGetItemAdr(Buffer,Offset+1,0),INT_TO_UDINT(CopyLen)*ibuf->DataSize);
 					//adjust number of values
-					ibuf->NumberValues=LIMIT(0,ibuf->NumberValues-1,ibuf->MaxValues);	
+					ibuf->NumberValues=limit(0,ibuf->NumberValues-1,ibuf->MaxValues);	
 				} else {//offset not rolled over
 					//[00TX000000]
 					//[0123456789]
@@ -187,7 +190,7 @@ unsigned short BufferRemoveOffset(unsigned long Buffer, unsigned short Offset, u
 						};
 					};
 					//adjust number of values
-					ibuf->NumberValues=LIMIT(0,ibuf->NumberValues-1,ibuf->MaxValues);	
+					ibuf->NumberValues=limit(0,ibuf->NumberValues-1,ibuf->MaxValues);	
 				};
 				
 				returnValue=iNumEntries;	
@@ -261,8 +264,8 @@ unsigned short BufferCopyItems(unsigned long Buffer, unsigned short Offset, unsi
 			if( Index >= UINT_TO_DINT(ibuf->MaxValues) ) {
 				Index= Index - ibuf->MaxValues;
 			}				
-			iNumEntries=LIMIT(0,NumEntries,ibuf->NumberValues-Offset);
-			CopyLen= LIMIT(0,iNumEntries,ibuf->MaxValues-Index);
+			iNumEntries=limit(0,NumEntries,ibuf->NumberValues-Offset);
+			CopyLen= limit(0,iNumEntries,ibuf->MaxValues-Index);
 			brsmemcpy(Destination,ibuf->Data+INT_TO_UDINT(Index)*ibuf->DataSize,INT_TO_UDINT(CopyLen)*ibuf->DataSize);
 			iDestination=Destination+INT_TO_UDINT(CopyLen)*ibuf->DataSize;
 			if( CopyLen != UINT_TO_INT(iNumEntries) ) {
@@ -293,7 +296,7 @@ unsigned long GetNextTopIndex(unsigned long Buffer) {
 	if( BufferValid(Buffer) ) {
 		ibuf = (Buffer_typ*)Buffer;
 		ibuf->TopIndex=ibuf->TopIndex-1;
-		ibuf->NumberValues=LIMIT(0,ibuf->NumberValues+1,ibuf->MaxValues);
+		ibuf->NumberValues=limit(0,ibuf->NumberValues+1,ibuf->MaxValues);
 		if( ibuf->TopIndex < 0 ) {
 			ibuf->TopIndex=ibuf->MaxValues-1;
 		}
@@ -312,7 +315,7 @@ unsigned long GetNextBottomIndex(unsigned long Buffer) {
 				ibuf->TopIndex=0;	
 			}				
 		}
-		ibuf->NumberValues=LIMIT(0,ibuf->NumberValues,ibuf->MaxValues);
+		ibuf->NumberValues=limit(0,ibuf->NumberValues,ibuf->MaxValues);
 		returnValue=GetBottomIndex(Buffer);
 	}
 }
