@@ -11,22 +11,36 @@
 
 #include "RingBufLib.h"
 
-#define ADR(x) x
-#define brsmemcpy memcpy
+#if !defined(_SG4) || defined(_NOT_BR)
+#include "bur.h"
+#include "stdlib.h"
+#define TMP_alloc(s, l) 0;*(l) = (UDINT)malloc(s)
+#define TMP_free(s, l) 0;free((void*)l)
+#endif
+
+#include "string.h"
+
+#define brsmemcpy(a,b,c) memcpy((void*)a,(void*)b,c)
+#define brsmemset(a,b,c) memset((void*)a,b,c)
 #define ERR_OK 0
 #define min(a,b) (((a)<(b))?(a):(b))
 #define max(a,b) (((a)>(b))?(a):(b))
 #define limit(a,b,c) (max(a,min(b, c)))
+#define DINT_TO_UDINT (unsigned long)
+#define DINT_TO_UINT (unsigned short)
+#define UINT_TO_DINT (signed long)
+#define INT_TO_UDINT (unsigned long)
+#define UINT_TO_INT (short)
 
 unsigned short BufferInit(unsigned long Buffer, unsigned short MaxValues, unsigned long DataSize) {
 	unsigned short returnValue=0;	
 	Buffer_typ* ibuf = (Buffer_typ*)Buffer;
 	if( BufferValid(Buffer) ) {
-		BufferDestroy(ADR(ibuf));	
+		BufferDestroy((UDINT)ibuf);	
 	}
-	if( ADR(ibuf) != 0 ) {
+	if( ibuf != 0 ) {
 		if( MaxValues > 0 ) {
-			returnValue=TMP_alloc(MaxValues * DataSize,ADR(ibuf->Data));
+			returnValue=TMP_alloc(MaxValues * DataSize, &ibuf->Data);
 			if( returnValue == 0 ) {
 				ibuf->DataSize=DataSize;
 				ibuf->MaxValues=MaxValues;
@@ -54,7 +68,7 @@ unsigned short BufferDestroy(unsigned long Buffer) {
 plcbit BufferValid(unsigned long Buffer) {
 	plcbit returnValue=0;
 	Buffer_typ* ibuf = (Buffer_typ*)Buffer;
-	if( ADR(ibuf) != 0 ) {
+	if( ibuf != 0 ) {
 		if( ibuf->Data != 0 ) {
 			if( ibuf->MaxValues > 0 ) {
 				returnValue=1;
@@ -67,7 +81,7 @@ plcbit BufferValid(unsigned long Buffer) {
 unsigned short BufferStatus(unsigned long Buffer) {
 	unsigned short returnValue = 0;
 	Buffer_typ* ibuf = (Buffer_typ*)Buffer;
-	if( ADR(ibuf) != 0 ) {
+	if( ibuf != 0 ) {
 		if( ibuf->Data != 0 ) {
 			if( ibuf->MaxValues > 0 ) {
 				returnValue=ERR_OK;
