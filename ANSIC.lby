@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<?AutomationStudio Version=4.3.8.58 SP?>
-<Library Version="0.02.4" xmlns="http://br-automation.co.at/AS/Library">
+<?AutomationStudio FileVersion="4.9"?>
+<Library Version="0.02.5" SubType="ANSIC" xmlns="http://br-automation.co.at/AS/Library">
   <Files>
     <File>RingBufLib.html</File>
     <File>RingBufLib.md</File>
