@@ -59,10 +59,14 @@ unsigned short BufferDestroy(unsigned long Buffer) {
 		Buffer_typ* ibuf = (Buffer_typ*)Buffer;
 		returnValue=TMP_free(ibuf->MaxValues * ibuf->DataSize ,ibuf->Data);
 		ibuf->Data=0;
+		ibuf->DataSize=0;
+		ibuf->MaxValues=0;
 		ibuf->TopIndex=-1;
+		ibuf->NumberValues=0;
 	} else {
 		returnValue=	BufferStatus(Buffer);
 	}
+	return returnValue;
 }
 
 plcbit BufferValid(unsigned long Buffer) {
@@ -94,6 +98,7 @@ unsigned short BufferStatus(unsigned long Buffer) {
 	} else {
 		returnValue= DINT_TO_UINT(RING_BUF_ERR_INVALID_BUF_POINTER);
 	}
+	return returnValue;
 }
 
 plcbit BufferFull(unsigned long Buffer) {
@@ -107,7 +112,8 @@ plcbit BufferFull(unsigned long Buffer) {
 		}
 	} else {	
 		returnValue=1;			
-	}	
+	}
+	return returnValue;
 }
 
 unsigned short BufferClear(unsigned long Buffer) {
@@ -120,7 +126,8 @@ unsigned short BufferClear(unsigned long Buffer) {
 		ibuf->NumberValues=0;	
 	} else {
 		returnValue= BufferStatus(Buffer);
-	}	
+	}
+	return returnValue;
 }
 
 unsigned short BufferRemoveBottom(unsigned long Buffer) {
@@ -133,7 +140,8 @@ unsigned short BufferRemoveBottom(unsigned long Buffer) {
 		}	
 	} else {
 		returnValue= BufferStatus(Buffer);
-	}	
+	}
+	return returnValue;
 }
 
 unsigned short BufferRemoveTop(unsigned long Buffer) {
@@ -150,7 +158,8 @@ unsigned short BufferRemoveTop(unsigned long Buffer) {
 		}	
 	} else {
 		returnValue= BufferStatus(Buffer);
-	}	
+	}
+	return returnValue;
 }
 
 unsigned short BufferRemoveOffset(unsigned long Buffer, unsigned short Offset, unsigned long Status) {
@@ -214,6 +223,7 @@ unsigned short BufferRemoveOffset(unsigned long Buffer, unsigned short Offset, u
 	} else {
 		returnValue= BufferStatus(Buffer);
 	};
+	return returnValue;
 }
 
 unsigned short BufferAddToTop(unsigned long Buffer, unsigned long Data) {
@@ -225,6 +235,7 @@ unsigned short BufferAddToTop(unsigned long Buffer, unsigned long Data) {
 	} else {
 		returnValue= BufferStatus(Buffer);
 	}
+	return returnValue;
 }
 
 unsigned short BufferAddToBottom(unsigned long Buffer, unsigned long Data) {
@@ -235,6 +246,7 @@ unsigned short BufferAddToBottom(unsigned long Buffer, unsigned long Data) {
 	} else {
 		returnValue=BufferStatus(Buffer);		
 	}
+	return returnValue;
 }
 
 unsigned long BufferGetItemAdr(unsigned long Buffer, unsigned short Offset, unsigned long Status) {
@@ -255,6 +267,7 @@ unsigned long BufferGetItemAdr(unsigned long Buffer, unsigned short Offset, unsi
 	} else {
 		SetStatusPointer(Status,BufferStatus(Buffer));
 	}
+	return returnValue;
 }
 
 unsigned short BufferCopyItems(unsigned long Buffer, unsigned short Offset, unsigned short NumEntries, unsigned long Destination, unsigned long Status) {
@@ -290,7 +303,8 @@ unsigned short BufferCopyItems(unsigned long Buffer, unsigned short Offset, unsi
 		}
 	} else {
 		SetStatusPointer(Status, BufferStatus(Buffer));
-	}	
+	}
+	return returnValue;
 }
 
 unsigned short BufferBottom(unsigned long Buffer) {
@@ -303,6 +317,7 @@ unsigned short BufferBottom(unsigned long Buffer) {
 			returnValue=0;			
 		}
 	}
+	return returnValue;
 }
 unsigned long GetNextTopIndex(unsigned long Buffer) {
 	unsigned long returnValue= 0;
@@ -316,6 +331,7 @@ unsigned long GetNextTopIndex(unsigned long Buffer) {
 		}
 	}
 	returnValue=ibuf->TopIndex;
+	return returnValue;
 }
 
 unsigned long GetNextBottomIndex(unsigned long Buffer) {
@@ -332,6 +348,7 @@ unsigned long GetNextBottomIndex(unsigned long Buffer) {
 		ibuf->NumberValues=limit(0,ibuf->NumberValues,ibuf->MaxValues);
 		returnValue=GetBottomIndex(Buffer);
 	}
+	return returnValue;
 }
 
 unsigned short GetBottomIndex(unsigned long Buffer) {
@@ -347,6 +364,7 @@ unsigned short GetBottomIndex(unsigned long Buffer) {
 			returnValue=0;			
 		}			
 	}
+	return returnValue;
 }
 
 unsigned short GetTopIndex(unsigned long Buffer) {
@@ -355,6 +373,7 @@ unsigned short GetTopIndex(unsigned long Buffer) {
 		Buffer_typ* ibuf = (Buffer_typ*)Buffer;
 		returnValue=ibuf->TopIndex;		
 	}
+	return returnValue;
 }
 
 plcbit SetStatusPointer(unsigned long pStatus, unsigned short Status) {
@@ -364,6 +383,6 @@ plcbit SetStatusPointer(unsigned long pStatus, unsigned short Status) {
 		returnValue=1;
 		iStatus = pStatus;
 		*iStatus = Status;
-	}			
-
+	}	
+	return returnValue;
 }			
