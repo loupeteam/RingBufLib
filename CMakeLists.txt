@@ -15,5 +15,8 @@ add_definitions(-D_REPLACE_CONST)
 
 add_library(${PROJECT_NAME} ${RingBufLib_SRC})
 
+enable_testing ()
+add_subdirectory (test)
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/../includes/)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/../includes/loupe/Includes/)
