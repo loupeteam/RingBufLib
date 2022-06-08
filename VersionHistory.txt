@@ -1,4 +1,6 @@
-0.2.4 - Migrate from AsString to AsBrStr
+0.2.5 20211116 - Convert internal code from ST to C
+
+0.2.4 20190111 - Migrate from AsString to AsBrStr
 
 0.02.3 20170525 - Bug Fix BufferRemoveOffset function
 
