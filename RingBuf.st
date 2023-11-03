@@ -1,10 +1,10 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Program: Alarm
- * File: BufferInit.st
- * Author: Josh
- * Created: December 07, 2012
+(*
+ * File: RingBuf.st
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of RingBufLib, licensed under the MIT License.
+ *
  ********************************************************************
  * Implementation of program Alarm
  ********************************************************************) 
