@@ -4,7 +4,6 @@
   <Files>
     <File>RingBufLib.html</File>
     <File>RingBufLib.md</File>
-    <File>VersionHistory.txt</File>
     <File Description="Exported data types">RingBufLib.typ</File>
     <File Description="Exported functions and function blocks">RingBufLib.fun</File>
     <File>RingBuf.st</File>
