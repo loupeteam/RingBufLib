@@ -5,7 +5,14 @@
   "scripts": {},
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "lpmConfig": {
+    "deploymentConfigs": [
+      "Intel",
+      "ARM"
+    ],
+    "gitClient": "GitExtensions"
+  },
   "dependencies": {
     "@loupeteam/librarybuilderproject": "^1.0.0"
   }
